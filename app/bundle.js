@@ -1,9 +1,23 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = "\n<div class=question>\n\n  <h4><%= question %></h4>\n\n  <% _(answers).each(function(answer) { %>\n    <div class=answer>\n      <%= answer %>\n    </div>\n  <% }) %>\n\n</div>\n\n";
+module.exports = "<div class=\"mark correct\">\n  <svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 66.7 70\" enable-background=\"new 0 0 66.7 70\" xml:space=\"preserve\"> <path d=\"M24.8,70c-2.2,0-4.2-1-5.6-2.8L1.4,43.6c-2.3-3.1-1.7-7.4,1.3-9.8c3.1-2.3,7.4-1.7,9.8,1.3l11.8,15.5L53.8,3.3 c2-3.3,6.3-4.3,9.6-2.2c3.3,2,4.3,6.3,2.2,9.6L30.8,66.7c-1.2,1.9-3.3,3.2-5.6,3.3C25.1,70,24.9,70,24.8,70z\"></path></svg>\n</div>\n\n";
 
 },{}],2:[function(require,module,exports){
-window.$ = require('jquery');
+module.exports = "\n<div class=question>\n\n  <h4><%= question %></h4>\n\n  <% _(answers).each(function(answer) { %>\n    <div class=answer>\n      <%= answer %>\n    </div>\n  <% }) %>\n\n</div>\n\n";
+
+},{}],3:[function(require,module,exports){
+module.exports = "<div class=\"mark incorrect\">\n  <svg version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 63.1 69.8\" enable-background=\"new 0 0 63.1 69.8\" xml:space=\"preserve\"><path d=\"M60.7,56L42.2,34.9l18.5-21.1c3.1-3.1,3.1-8.2,0-11.4c-3.1-3.1-8.2-3.1-11.4,0L31.5,22.7L13.7,2.4c-3.1-3.1-8.2-3.1-11.4,0 c-3.1,3.1-3.1,8.2,0,11.4l18.5,21.1L2.4,56c-3.1,3.1-3.1,8.2,0,11.4c3.1,3.1,8.2,3.1,11.4,0l17.8-20.3l17.8,20.3 c3.1,3.1,8.2,3.1,11.4,0C63.9,64.3,63.9,59.2,60.7,56z\"></path></svg>\n</div>\n";
+
+},{}],4:[function(require,module,exports){
+var $ = require('jquery');
+window.$ = $;
 var _ = require('underscore');
+
+
+
+// TODO remove:
+var ga = function() { };
+
+
 
 var demographicQuestions = require('./questions').demographics
 var demographicTemplate = _.template(require('./demographic_template.ejs'));
@@ -20,7 +34,7 @@ var quizHTML = _(quizQuestions).map(function(q) {
 $(function() {
 
   // add templated demographics questions
-  $('.demographics').append(demographicHTML);
+  $('.demographics .question-container').append(demographicHTML);
   $('.demographics .question').first().addClass('shown');
 
   // this fades in the background under the demographics modal
@@ -29,21 +43,29 @@ $(function() {
   // answers to demographics
   var timer = false;
   var demographicsDone = false;
-  $('body').on('click .demographics .answer', function(e) {
-    if (timer) return;
-    var $question = $(e.target).parents('.question');
-    var $next = $question.next();
-
+  $('body').on('click', '.demographics .answer', function(e) {
+    if (timer)
+      return;
     timer = true;    
     _(function() { timer = false; }).delay(800);
 
+    var $question = $(e.target).parents('.question');
+    var answer = e.target.textContent.toLowerCase().trim();
+
+    // gender
+    if ($question.index() === 0)
+      ga('set', 'dimension1', answer); 
+    // age bracket
+    else
+      ga('set', 'dimension2', answer);
+ 
+    var $next = $question.next();
     if ($next.length === 0) {
       $('.demographics').removeClass('shown');
+      demographicsDone = true;
       _(function() { $('.demographics').remove(); }).delay(800);
     }
     else {
-// ga('set', 'dimension1', dimensionValue); // gender
-// ga('set', 'dimension2', dimensionValue); // age bracket
       $question.removeClass('shown');
       $next.addClass('shown');
     }
@@ -59,67 +81,108 @@ $(function() {
     if (!demographicsDone)
       return;
     else {
-      $('.quiz').css({transform: 'translateY(-100%)'});
-      $('.quiz .slide').first().addClass('current');
+      // $('.quiz').css({transform: 'translateY(-100%)'});
+      // $('.quiz .slide').first().addClass('current');
+
+      $('.quiz').css({transform: 'translateY(-900%)'});
+      $('.quiz .slide').eq(8).addClass('current');
     }
   });
 
 
   // templated quiz questions
-  $('.quiz').append(quizHTML);
+  $('.quiz').prepend(quizHTML);
+
+  var label, correctIndex, chosenIndex;
 
   var correct = 0;
   var current = 0;
 
+  var correct = 7;
+  var current = 8;
+
+  var iconCorrect = require('./correct.ejs');
+  var iconIncorrect = require('./incorrect.ejs');
+
+  var waiting = false;
+
   // quiz slides
   $('body').on('click', '.quiz .answer', function(e) {
 
-    var correctIndex = quizQuestions[current].correct;
-    // -1 because of the h4 above the .answer divs
-    var chosenIndex = $(e.target).closest('.answer').index() - 1;
-    console.log({correctIndex, chosenIndex});
+    // prevents click more than once and changing the answer
+    if (waiting)
+      return;
 
-    if (correctIndex === chosenIndex) {
-      correct += 1;
+    waiting = true;
 
-      var q = quizQuestions[current].short_label
-      // ga('send', 'event', [eventCategory], 'correct', '', [eventValue]);
-      // category is the question
-      // action is correct/incorrect
-      // label can be the full question
-      // value = 1 if correct, 0 if not correct
-    }
-    else {
+    correctIndex = quizQuestions[current].correct;
+    chosenIndex = $(e.target).closest('.answer').index();
 
-    }
+    // this is short version used for Google Analytics
+    label = quizQuestions[current].label;
 
-    // advance the quiz
-    current += 1;
-    if (current <= 9) {
+    if (correctIndex === chosenIndex)
+      indicateCorrect();
+    else
+      indicateIncorrect();
 
-      $('.progress-bar').css({transform: 'scale(' + (current / 9) + ', 1)'});
-
-      $('.quiz .slide')
-        .removeClass('current')
-        .eq(current).addClass('current');
-     
-      var pos = (current+1) * -100 + '%';
-      $('.quiz').css({transform: 'translateY(' + pos + ')'});
-    }
-
-    // show scores
-    else {
-
-
-      console.log('done');
-    }
-
+    console.log('wtf');
+    _(advanceQuiz).delay(2500);
   });
+
+
+  function indicateCorrect() {
+    correct += 1;
+    $('.quiz .slide.current .result').text('Correcto!').css({opacity: 1});
+    $('.quiz .slide.current .answer').eq(chosenIndex).prepend(iconCorrect);
+    $('.quiz .slide.current .mark').css({opacity: 1});
+    ga('send', 'event', label, 'correct', label, 1);
+  };
+
+  function indicateIncorrect() {
+    $('.quiz .slide.current .result').text('Equivocado!').css({opacity: 1});
+    $('.quiz .slide.current .answer').eq(correctIndex).prepend(iconCorrect);
+    $('.quiz .slide.current .answer').eq(chosenIndex).prepend(iconIncorrect);
+    $('.quiz .slide.current')[0].offsetHeight;
+    $('.quiz .slide.current .mark').css({opacity: 1});
+    ga('send', 'event', label, 'incorrect', label, 0);
+  };
+
+  function advanceQuiz() {
+    waiting = false;
+
+    current += 1;
+
+    $('.progress-bar').css({transform: 'scale(' + (current / 9) + ', 1)'});
+
+    $('.quiz .slide')
+      .removeClass('current')
+      .eq(current).addClass('current');
+   
+    var pos = (current+1) * -100 + '%';
+    $('.quiz').css({transform: 'translateY(' + pos + ')'});
+
+    // reached the end
+    if (current === 9) {
+
+      var $text;
+      if (correct <= 3)
+        $text = $('.text.for-0-3-correct');
+      else if (correct <= 6)
+        $text = $('.text.for-4-6-correct');
+      else
+        $text = $('.text.for-7-9-correct');
+
+      $text.prepend('<h4>Contestaste ' + correct + ' de 9 correctamente!</h4>').addClass('shown');
+
+    }
+
+  }
 
 });
 
 
-},{"./demographic_template.ejs":1,"./questions":3,"./quiz_template.ejs":4,"jquery":5,"underscore":6}],3:[function(require,module,exports){
+},{"./correct.ejs":1,"./demographic_template.ejs":2,"./incorrect.ejs":3,"./questions":5,"./quiz_template.ejs":6,"jquery":7,"underscore":8}],5:[function(require,module,exports){
 
 module.exports.demographics = [
   {
@@ -246,10 +309,10 @@ module.exports.quiz = [
 ];
 
 
-},{}],4:[function(require,module,exports){
-module.exports = "\n<div class=slide>\n\n  <div class=background></div>\n\n  <div class=content>\n    <h4><%= question %></h4>\n\n    <% _(answers).each(function(answer) { %>\n      <div class=answer>\n\n        <%= answer %>\n\n      </div>\n\n    <% }) %>\n\n  </div>\n\n</div>\n\n\n";
+},{}],6:[function(require,module,exports){
+module.exports = "\n<div class=slide>\n\n  <div class=background></div>\n\n  <div class=content>\n\n    <h4><%= question %></h4>\n      \n    <div class=result></div>\n\n    <div class=answers>\n      <% _(answers).each(function(answer) { %>\n        <div class=answer>\n\n          <%= answer %>\n\n        </div>\n\n      <% }) %>\n    </div>\n\n  </div>\n\n</div>\n\n\n";
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.2.4
  * http://jquery.com/
@@ -10065,7 +10128,7 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -11615,4 +11678,4 @@ return jQuery;
   }
 }.call(this));
 
-},{}]},{},[2]);
+},{}]},{},[4]);

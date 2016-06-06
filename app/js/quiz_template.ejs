@@ -4,16 +4,21 @@
   <div class=background></div>
 
   <div class=content>
+
     <h4><%= question %></h4>
+      
+    <div class=result></div>
 
-    <% _(answers).each(function(answer) { %>
-      <div class=answer>
+    <div class=answers>
+      <% _(answers).each(function(answer) { %>
+        <div class=answer>
 
-        <%= answer %>
+          <%= answer %>
 
-      </div>
+        </div>
 
-    <% }) %>
+      <% }) %>
+    </div>
 
   </div>
 

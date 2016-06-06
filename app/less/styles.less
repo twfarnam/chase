@@ -27,7 +27,7 @@ html, body {
   padding-bottom: 1.5em;
 
   opacity: 0;
-  transition: opacity 0.3s ease-out;
+  transition: opacity 300ms ease-out;
 }
 
 .demographics.shown {
@@ -117,7 +117,7 @@ html, body {
   user-select: none;
 
   opacity: 0;
-  transition: opacity 0.3s 1.5s ease-in-out;
+  transition: opacity 300ms ease-in-out 1.5s;
 }
 
 .container .intro.shown {
@@ -185,36 +185,41 @@ html, body {
   z-index: 5;
   transform: scale(0);
   transform-origin: 0 0;
-  transition: transform 0.8s ease-out 0.6s;
-  background: rgb( 38, 107, 182);
+  transition: transform 800ms ease-out 600ms;
+  background: rgb(38, 107, 182);
 }
+
 
 .quiz {
   position: absolute;
   top: 100%;
-  top: calc(~'100% + 3px');
   width: 100%;
   height: 100%;
-  transition: transform 0.5s ease-out 0.1s;
+  transition: transform 300ms ease-out;
 }
 
 .quiz .slide {
   height: 100%;
   width: 100%;
   position: relative;
+  color: white;
 }
   
 .quiz .slide .background {
   position: absolute;
-  top: -3px; right: -3px; bottom: -3px; left: -3px;
+  top: -5px; right: -5px; bottom: -5px; left: -5px;
   background-image: url(images/quiz-background.png);
   background-size: cover;
   background-position: 50% 0;
   transition: filter 1s ease-in-out 1s;
 }
 
+.quiz .slide:first-child .background {
+  top: 0;
+}
+
 .quiz .slide.current  .background {
-  filter: blur(3px);
+  filter: blur(5px);
 }
 
 
@@ -222,31 +227,138 @@ html, body {
 .quiz .slide .content {
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 0;
-  color: white;
   transform: translateY(100%);;
-  transition: transform 0.8s ease-in-out 2s;
+  transition: transform 300ms ease-in-out 1.4s;
 }
 
 .quiz .slide.current .content {
-  transform: translateY(0);;
+  transform: translateY(0);
 }
 
 
 .quiz .slide h4 {
-  margin: 1em;
-  margin-top: 2em;
+  padding: 1em;
+  padding-top: 2em;
+  margin: 0;
   font-size: 1.5em;
   font-weight: 300;
+  border-left: solid 8px rgb(38,107,182);
 }
 
 .quiz .slide .answer {
+  position: relative;
   margin: 1em;
   padding: 1em;
-  background-color: rgba(38,107,182, 0.5);
+  background-color: rgba(38, 107, 182, 0.5);
   font-weight: 300;
   font-size: 1.2em;
   text-align: center;
   cursor: pointer;
 }
 
+.quiz .slide .result {
+  height: 1.2em;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.2em;
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+
+.quiz .slide .answer .mark {
+  height: 2em;
+  width: 2em;
+
+  position: absolute;
+  left: 0;
+  top: 50%;
+
+  transform: translate(-25%, -50%);
+
+  border: solid 5px rgb(38,107,182);
+  border-radius: 50%;
+  fill: rgb(38,107,182);
+
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+
+.quiz .mark.incorrect { background-color: black; }
+.quiz .mark.correct   { background-color: white; }
+
+.quiz .slide .answer .mark svg {
+  position: absolute;
+  width: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.end .text {
+  padding: 0 1.3em;
+  font-size: 1.2em;
+  position: absolute;
+  height: 100%;
+
+  text-align: center;
+  font-weight: 300;
+
+  transition: transform 300ms ease-in-out 1.4s;
+  transform: translateY(100%);;
+}
+
+.end .text.shown {
+  transform: none;
+}
+
+.end .text h4 {
+  border: none;
+  padding-bottom: 0.5em;
+  font-size: 1.2em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.end .text h5 {
+  font-size: 1.8em;
+  margin: 0;
+}
+
+.end a {
+  text-decoration: none;
+  color: #0af;
+}
+
+.end a:visited {
+  color: #4ec4ff;
+}
+
+.social-icons {
+  text-align: center;
+  position: absolute;
+  bottom: 20%;
+  width: 100%;
+}
+
+.social-icons .icon {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(50,50,50,0.5);
+  margin: 0 10px;
+
+  cursor: pointer;
+}
+
+.social-icons .icon img {
+  position: absolute;
+  width: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 

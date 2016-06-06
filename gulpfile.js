@@ -18,6 +18,23 @@ var browserSync = require('browser-sync');
 var reload = browserSync.reload;
 
 
+gulp.task('build', function() {
+  browserify({
+    entries: ['./app/js/index.js']
+  })
+  .transform(stringify, {
+    appliesTo: { includeExtensions: ['.ejs'] },
+  })
+  .bundle()
+  .on('error', console.error.bind(console))
+  .pipe(source('./bundle.js'))
+  .pipe(buffer())
+  .pipe(uglify())
+  .pipe(gulp.dest('./build'));
+
+   gulp.src('./app/**/*.{html,css,jpg,png}').pipe(gulp.dest('./build'));
+});
+
 gulp.task('js', function() {
   return browserify({
     entries: ['./app/js/index.js']
