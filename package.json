@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "browser-sync": "^2.12.10",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-less": "^3.1.0",
+    "gulp-uglify": "^1.5.3",
+    "jquery": "^2.2.4",
+    "stringify": "^5.1.0",
+    "uglify": "^0.1.5",
+    "underscore": "^1.8.3",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "repository": "",
+  "license": ""
+}
