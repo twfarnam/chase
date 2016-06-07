@@ -1,27 +1,22 @@
 var $ = require('jquery');
-window.$ = $;
 var _ = require('underscore');
 
-
-
-// TODO remove:
-var ga = function() { };
-
-
-
-var demographicQuestions = require('./questions').demographics
-var demographicTemplate = _.template(require('./demographic_template.ejs'));
-var demographicHTML = _(demographicQuestions).map(function(q) {
-  return demographicTemplate(q);
-}).join('');
-
-var quizQuestions = require('./questions').quiz;
-var quizTemplate = _.template(require('./quiz_template.ejs'));
-var quizHTML = _(quizQuestions).map(function(q) {
-  return quizTemplate(q);
-}).join('');
-
 $(function() {
+
+  if ($('body').hasClass('article'))
+    return;
+
+  var demographicQuestions = require('./questions').demographics
+  var demographicTemplate = _.template(require('./demographic_template.ejs'));
+  var demographicHTML = _(demographicQuestions).map(function(q) {
+    return demographicTemplate(q);
+  }).join('');
+
+  var quizQuestions = require('./questions').quiz;
+  var quizTemplate = _.template(require('./quiz_template.ejs'));
+  var quizHTML = _(quizQuestions).map(function(q) {
+    return quizTemplate(q);
+  }).join('');
 
   // add templated demographics questions
   $('.demographics .question-container').append(demographicHTML);
@@ -63,21 +58,8 @@ $(function() {
   });
 
   // add these two lines to skip demographics:
-  $('.demographics').remove();
-  demographicsDone = true;
-
-  // first quiz slide show with .begin button
-  $('.begin').on('click', function(e) {
-    if (!demographicsDone)
-      return;
-    else {
-      // $('.quiz').css({transform: 'translateY(-100%)'});
-      // $('.quiz .slide').first().addClass('current');
-
-      $('.quiz').css({transform: 'translateY(-900%)'});
-      $('.quiz .slide').eq(8).addClass('current');
-    }
-  });
+  // $('.demographics').remove();
+  // demographicsDone = true;
 
 
   // templated quiz questions
@@ -88,13 +70,27 @@ $(function() {
   var correct = 0;
   var current = 0;
 
-  var correct = 7;
-  var current = 8;
-
   var iconCorrect = require('./correct.ejs');
   var iconIncorrect = require('./incorrect.ejs');
 
   var waiting = false;
+
+  // first quiz slide show with .begin button
+  $('.begin').on('click', function(e) {
+    if (!demographicsDone)
+      return;
+    else {
+      $('.quiz').css({transform: 'translateY(-100%)'});
+      $('.quiz .slide').first().addClass('current');
+
+      // swap lines above for these to jump to end of quiz:
+      // $('.quiz').css({transform: 'translateY(-900%)'});
+      // $('.quiz .slide').eq(8).addClass('current');
+      // correct = 7;
+      // current = 8;
+    }
+  });
+
 
   // quiz slides
   $('body').on('click', '.quiz .answer', function(e) {
@@ -171,3 +167,38 @@ $(function() {
 
 });
 
+
+// works everywhere including article pages
+$(function() {
+
+  $('body').on('click', '.social-icons .icon', function(e) {
+    var $icon = $(e.target).closest('.icon');
+
+    var shortMessage = '¿Cuál es tu IQ de fraude?';
+    var longMessage = '¿Te crees bastante listo cuando se trata de fraude y tu seguridad financiera? Pon tu conocimiento a prueba con estas preguntas para determinar tu verdadero IQ de fraude.';
+
+    if ($icon.is('.facebook')) {
+      shareUrl = (
+        'https://www.facebook.com/sharer/sharer.php?u='
+          + encodeURIComponent(location.href)
+      );
+    }
+    else if ($icon.is('.twitter')) {
+      shareUrl = (
+        'https://twitter.com/intent/tweet' +
+        '?text=' + shortMessage +
+        '&url=' + encodeURIComponent(location.href)
+      );
+    }
+    else if ($icon.is('.email')) {
+      shareUrl = (
+        'mailto:' +
+        '?subject=' + encodeURIComponent(shortMessage) +
+        '&body=' + longMessage + encodeURIComponent('\n\n' + location.href)
+      );
+    }
+
+    window.open(shareUrl, '_blank');
+  });
+
+});

@@ -6,13 +6,10 @@ USA Today json data: http://www.gannett-cdn.com/experiments/usatoday/2016/quizze
 
 
 
+push code
 
-show the answer slide (w/ social buttons)
+test in real devices
 
-markup the articles to show them
-
-social media meta tags
-
-browser testing, esp mobile
+validate social tags
 
 

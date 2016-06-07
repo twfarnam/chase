@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html class=article>
+
+  <head>
+
+    <title><%= title %></title>
+    <link rel=stylesheet href=styles.css>
+    <script src=bundle.js></script>
+
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=0">
+    <meta name="theme-color" content="#000">
+
+    <%# FACEBOOK %>
+
+    <%# <meta property="og:url" content=""> %>
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="<%= title %>">
+    <meta property="og:description" content="<%= description %>">
+    <%# <meta property="og:site_name" content=""> %>
+    <meta property="og:image" content="images/fb_post.jpg">
+    <meta property="og:image:width" content="600">
+    <meta property="og:image:height" content="400">
+
+    <%# TWITTER %>
+
+    <meta name="twitter:title" content="<%= title %>">
+    <meta name="twitter:description" content="<%= description %>">
+    <meta name="twitter:site" content="<%# twitter_handle %>">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="images/fb_post.jpg">
+
+  </head>
+
+  <body>
+
+    <div class=sponsor>
+      Artículo patrocinado por
+      <img src=images/chase-logo-200x37.png>
+    </div>
+
+    <%- contents %>
+
+    <div class=social-icons>
+      <span class="facebook icon"><img src="images/fb.svg"></span>
+      <span class="twitter icon"><img src="images/twitter.svg"></span>
+      <span class="email icon"><img src="images/email.svg"></span>
+    </div>
+
+  </body>
+</html>
