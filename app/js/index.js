@@ -58,8 +58,8 @@ $(function() {
   });
 
   // add these two lines to skip demographics:
-  // $('.demographics').remove();
-  // demographicsDone = true;
+  $('.demographics').remove();
+  demographicsDone = true;
 
 
   // templated quiz questions
@@ -80,14 +80,14 @@ $(function() {
     if (!demographicsDone)
       return;
     else {
-      $('.quiz').css({transform: 'translateY(-100%)'});
-      $('.quiz .slide').first().addClass('current');
+      // $('.quiz').css({transform: 'translateY(-100%)'});
+      // $('.quiz .slide').first().addClass('current');
 
       // swap lines above for these to jump to end of quiz:
-      // $('.quiz').css({transform: 'translateY(-900%)'});
-      // $('.quiz .slide').eq(8).addClass('current');
-      // correct = 7;
-      // current = 8;
+      $('.quiz').css({transform: 'translateY(-900%)'});
+      $('.quiz .slide').eq(8).addClass('current');
+      correct = 7;
+      current = 8;
     }
   });
 
@@ -112,21 +112,20 @@ $(function() {
     else
       indicateIncorrect();
 
-    console.log('wtf');
     _(advanceQuiz).delay(2500);
   });
 
 
   function indicateCorrect() {
     correct += 1;
-    $('.quiz .slide.current .result').text('Correcto!').css({opacity: 1});
+    $('.quiz .slide.current .result').text('¡Correcto!').css({opacity: 1});
     $('.quiz .slide.current .answer').eq(chosenIndex).prepend(iconCorrect);
     $('.quiz .slide.current .mark').css({opacity: 1});
     ga('send', 'event', label, 'correct', label, 1);
   };
 
   function indicateIncorrect() {
-    $('.quiz .slide.current .result').text('Equivocado!').css({opacity: 1});
+    $('.quiz .slide.current .result').text('Incorrecto').css({opacity: 1});
     $('.quiz .slide.current .answer').eq(correctIndex).prepend(iconCorrect);
     $('.quiz .slide.current .answer').eq(chosenIndex).prepend(iconIncorrect);
     $('.quiz .slide.current')[0].offsetHeight;
@@ -159,7 +158,7 @@ $(function() {
       else
         $text = $('.text.for-7-9-correct');
 
-      $text.prepend('<h4>Contestaste ' + correct + ' de 9 correctamente!</h4>').addClass('shown');
+      $text.prepend('<h4>¡Contestaste ' + correct + ' de 9 correctamente!</h4>').css({display: 'block'});
 
     }
 
@@ -174,8 +173,8 @@ $(function() {
   $('body').on('click', '.social-icons .icon', function(e) {
     var $icon = $(e.target).closest('.icon');
 
-    var shortMessage = '¿Cuál es tu IQ de fraude?';
-    var longMessage = '¿Te crees bastante listo cuando se trata de fraude y tu seguridad financiera? Pon tu conocimiento a prueba con estas preguntas para determinar tu verdadero IQ de fraude.';
+    var shortMessage = '¿Cuál es tu IQ de fraude? Toma este #FraudIQ quiz patrocinado por @Chase ';
+    var longMessage = '¿Te crees bastante listo cuando se trata de fraude y tu seguridad financiera? Pon tu conocimiento a prueba con este #FraudIQ quiz patrocinado por Chase para determinar tu verdadero IQ de fraude.';
 
     if ($icon.is('.facebook')) {
       shareUrl = (
@@ -186,7 +185,7 @@ $(function() {
     else if ($icon.is('.twitter')) {
       shareUrl = (
         'https://twitter.com/intent/tweet' +
-        '?text=' + shortMessage +
+        '?text=' + encodeURIComponent(shortMessage) +
         '&url=' + encodeURIComponent(location.href)
       );
     }
@@ -194,7 +193,7 @@ $(function() {
       shareUrl = (
         'mailto:' +
         '?subject=' + encodeURIComponent(shortMessage) +
-        '&body=' + longMessage + encodeURIComponent('\n\n' + location.href)
+        '&body=' + encodeURIComponent(longMessage +'\n\n' + location.href)
       );
     }
 

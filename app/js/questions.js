@@ -15,7 +15,7 @@ module.exports.demographics = [
       "26-35",
       "36-45",
       "46-55",
-      "55+",
+      "56+",
       "Prefiero no decir",
     ],
   },
@@ -24,7 +24,7 @@ module.exports.demographics = [
 
 module.exports.quiz = [
   {
-    question: "¡Aviso de oferta! Recibo un email sobre una gran oferta online de mi tienda favorita. Estoy conectado al Wi-Fi de una cafetería local. ¿Qué debo hacer?",
+    question: "¡Aviso de oferta! Recibí un email sobre una gran oferta online de mi tienda favorita. Estoy conectado al Wi-Fi de una cafetería. ¿Qué debo hacer?",
     label: "1. Oferta online",
     correct: 1,
     answers: [
@@ -103,7 +103,7 @@ module.exports.quiz = [
     label: "8. Servicios de protección",
     correct: 0,
     answers: [
-      "Protección de cero obligación en transacciones no autorizadas. Monitoreo de fraude las 24 horas. Autorización de viaje paras compras específicas cuando fraude es detectado",
+      "Protección de cero obligación en transacciones no autorizadas. Monitoreo de fraude las 24 horas. Autorización de viaje paras compras específicas cuando fraude es detectado.",
       "No sé",
       "Nada",
     ],
