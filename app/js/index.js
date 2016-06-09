@@ -58,8 +58,8 @@ $(function() {
   });
 
   // add these two lines to skip demographics:
-  $('.demographics').remove();
-  demographicsDone = true;
+  // $('.demographics').remove();
+  // demographicsDone = true;
 
 
   // templated quiz questions
@@ -80,14 +80,14 @@ $(function() {
     if (!demographicsDone)
       return;
     else {
-      // $('.quiz').css({transform: 'translateY(-100%)'});
-      // $('.quiz .slide').first().addClass('current');
+      $('.quiz').css({transform: 'translateY(-100%)'});
+      $('.quiz .slide').first().addClass('current');
 
       // swap lines above for these to jump to end of quiz:
-      $('.quiz').css({transform: 'translateY(-900%)'});
-      $('.quiz .slide').eq(8).addClass('current');
-      correct = 7;
-      current = 8;
+      // $('.quiz').css({transform: 'translateY(-900%)'});
+      // $('.quiz .slide').eq(8).addClass('current');
+      // correct = 7;
+      // current = 8;
     }
   });
 
