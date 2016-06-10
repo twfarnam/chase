@@ -50,6 +50,10 @@ gulp.task('build', function() {
     .pipe(gulp.dest('./build'))
     .pipe(reload({stream: true}));
 
+  // copy html changes
+  gulp.src('./app/*.html')
+    .pipe(gulp.dest('./build'));
+
 });
 
 gulp.task('html', function () {
