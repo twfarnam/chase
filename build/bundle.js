@@ -266,7 +266,7 @@ module.exports.quiz = [
     ],
   },
   {
-    question: "Me aseguro de que mi información de contacto está habilitada con mi banco:",
+    question: "Me aseguro de que mi información de contacto está actualizada con mi banco:",
     label: "3. Informacion de contacto",
     correct: 0,
     answers: [
@@ -275,7 +275,7 @@ module.exports.quiz = [
     ],
   },
   {
-    question: "Acabo de obtener una nueva y brillante tarjeta de débito o crédito actualizada con chip electrónico. La uso así: ",
+    question: "Acabo de obtener una nueva y brillante tarjeta de débito o crédito habilitada con chip electrónico. La uso así: ",
     label: "4. Tarjeta de chip",
     correct: 0,
     answers: [
