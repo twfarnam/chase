@@ -34,7 +34,7 @@ module.exports.quiz = [
     ],
   },
   {
-    question: "Mi contraseña de email o cuenta bancaria es fácil de recordar porque es:",
+    question: "Mi contraseña de email o cuenta bancaria no es fácil de recordar porque es:",
     label: "2. Contraseña",
     correct: 5,
     answers: [

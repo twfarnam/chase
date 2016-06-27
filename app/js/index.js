@@ -6,6 +6,10 @@ $(function() {
   if ($('body').hasClass('article'))
     return;
 
+  $('body').on('click', '.prompt .button', function(e) {
+    $('.prompt').remove();
+  });
+
   var demographicQuestions = require('./questions').demographics
   var demographicTemplate = _.template(require('./demographic_template.ejs'));
   var demographicHTML = _(demographicQuestions).map(function(q) {
